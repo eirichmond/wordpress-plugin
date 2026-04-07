@@ -1,6 +1,6 @@
-# WordPress Plugin Developer — Claude Code Plugin
+# WordPress Plugin Developer - Claude Code Plugin
 
-A [Claude Code plugin](https://docs.anthropic.com/en/docs/claude-code/plugins) that gives Claude deep knowledge of WordPress plugin development. When installed, Claude writes WordPress plugins that follow modern PHP practices, WordPress Coding Standards, and established security patterns — without you having to repeat the same instructions every session.
+A [Claude Code plugin](https://docs.anthropic.com/en/docs/claude-code/plugins) that gives Claude deep knowledge of WordPress plugin development. When installed, Claude writes WordPress plugins that follow modern PHP practices, WordPress Coding Standards, and established security patterns - without you having to repeat the same instructions every session.
 
 ## What It Does
 
@@ -11,9 +11,9 @@ This plugin adds three things to your Claude Code sessions:
 Automatically activates when you're working on WordPress plugin code. Claude will:
 
 - Write PHP 8.2+ with strict types, typed properties, union types, enums, and readonly properties
-- Follow WordPress Coding Standards (WPCS) — tabs, Yoda conditions, spaces inside parentheses, proper naming
-- Apply security best practices — input sanitisation, output escaping, nonce verification, capability checks, prepared database queries
-- Use the correct WordPress APIs — hooks, custom post types, `register_post_meta()`, block editor, REST API, WP-CLI
+- Follow WordPress Coding Standards (WPCS) - tabs, Yoda conditions, spaces inside parentheses, proper naming
+- Apply security best practices - input sanitisation, output escaping, nonce verification, capability checks, prepared database queries
+- Use the correct WordPress APIs - hooks, custom post types, `register_post_meta()`, block editor, REST API, WP-CLI
 - Structure plugins with PSR-4 autoloading, Composer, and `@wordpress/scripts`
 - Add DocBlocks to every function, favour early returns, keep functions small and single-purpose
 
@@ -29,7 +29,7 @@ This produces a `TASKS.md` file with numbered, grouped tasks where each task has
 
 ### 3. `/plugin-build` Command
 
-Works through a task list one step at a time — implementing, verifying, and marking each task complete before moving on.
+Works through a task list one step at a time - implementing, verifying, and marking each task complete before moving on.
 
 ```
 /plugin-build
@@ -64,7 +64,7 @@ ln -s ~/projects/wordpress-plugin ~/.claude/plugins/wordpress-plugin
 
 ### Verify installation
 
-Start a Claude Code session and the plugin should be loaded automatically. You can verify by asking Claude about WordPress plugin development patterns — it should reference WPCS, strict types, security practices, and the task-driven workflow without being prompted.
+Start a Claude Code session and the plugin should be loaded automatically. You can verify by asking Claude about WordPress plugin development patterns - it should reference WPCS, strict types, security practices, and the task-driven workflow without being prompted.
 
 ## Usage
 
@@ -112,7 +112,7 @@ Add a settings page under the Settings menu with fields for API key, sync interv
 and debug mode. Use the Settings API.
 ```
 
-Claude will write the code following all the same standards — strict types, WPCS, security, DocBlocks, small functions — whether you use the structured task workflow or not.
+Claude will write the code following all the same standards - strict types, WPCS, security, DocBlocks, small functions - whether you use the structured task workflow or not.
 
 ## What's Inside
 
@@ -120,7 +120,7 @@ Claude will write the code following all the same standards — strict types, WP
 
 | File | Purpose |
 |---|---|
-| `skills/wordpress-plugin-developer/SKILL.md` | Core skill definition — coding standards, security rules, plugin structure, patterns for hooks, CPTs, blocks, REST API, assets, i18n, testing, and performance |
+| `skills/wordpress-plugin-developer/SKILL.md` | Core skill definition - coding standards, security rules, plugin structure, patterns for hooks, CPTs, blocks, REST API, assets, i18n, testing, and performance |
 
 ### Commands
 
@@ -132,7 +132,7 @@ Claude will write the code following all the same standards — strict types, WP
 
 ### Reference Files
 
-The skill uses progressive disclosure — core patterns are in the main skill file, and detailed templates and examples are in reference files that Claude loads only when needed:
+The skill uses progressive disclosure - core patterns are in the main skill file, and detailed templates and examples are in reference files that Claude loads only when needed:
 
 | File | Contents |
 |---|---|
@@ -147,11 +147,11 @@ The skill uses progressive disclosure — core patterns are in the main skill fi
 
 Plugins built with this tool target:
 
-- **PHP 8.2+** — strict types, typed properties, enums, readonly, match expressions, named arguments
-- **WordPress 6.7+** — current APIs only, no deprecated functions
-- **Composer** — PSR-4 autoloading, PHPCS, PHPUnit, PHPStan as dev dependencies
-- **Node/npm** — `@wordpress/scripts` for block compilation and asset bundling
-- **wp-env** — local development and test environment
+- **PHP 8.2+** - strict types, typed properties, enums, readonly, match expressions, named arguments
+- **WordPress 6.7+** - current APIs only, no deprecated functions
+- **Composer** - PSR-4 autoloading, PHPCS, PHPUnit, PHPStan as dev dependencies
+- **Node/npm** - `@wordpress/scripts` for block compilation and asset bundling
+- **wp-env** - local development and test environment
 
 ## Plugin Structure
 
