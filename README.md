@@ -45,26 +45,30 @@ After each task, Claude pauses to check in before continuing. This gives you a c
 
 ## Installation
 
-### Option 1: Clone to the plugins directory
+### 1. Clone the plugin
+
+Clone this repo into a directory where you keep your Claude Code plugins:
 
 ```bash
-# Create the plugins directory if it doesn't exist
 mkdir -p ~/.claude/plugins
-
-# Clone the plugin
 git clone <repo-url> ~/.claude/plugins/wordpress-plugin
 ```
 
-### Option 2: Clone anywhere and symlink
+You can clone it anywhere you like — `~/.claude/plugins/` is just a convention.
+
+### 2. Use it in a session
+
+This plugin is designed to be loaded on demand, not globally. When you start a Claude Code session for WordPress plugin work, pass the plugin directory:
 
 ```bash
-git clone <repo-url> ~/projects/wordpress-plugin
-ln -s ~/projects/wordpress-plugin ~/.claude/plugins/wordpress-plugin
+claude --plugin-dir ~/.claude/plugins/wordpress-plugin
 ```
 
-### Verify installation
+This loads the WordPress plugin developer skill and commands for that session only, keeping your other Claude sessions clean.
 
-Start a Claude Code session and the plugin should be loaded automatically. You can verify by asking Claude about WordPress plugin development patterns - it should reference WPCS, strict types, security practices, and the task-driven workflow without being prompted.
+### Verify it's loaded
+
+Once in the session, you can confirm the plugin is active by running `/plugin-tasks` or `/plugin-build`. Claude should also automatically apply WordPress coding standards and security practices when you ask it to write plugin code.
 
 ## Usage
 
