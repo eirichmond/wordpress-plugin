@@ -1,0 +1,8 @@
+{
+    "name": "wordpress-plugin",
+    "description": "A plugin to create a new WordPress plugin",
+    "version": "0.0.1",
+    "author": {
+        "name": "Elliott Richmond"
+    }
+ }
