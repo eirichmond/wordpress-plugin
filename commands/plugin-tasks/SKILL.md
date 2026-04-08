@@ -1,22 +1,26 @@
 ---
 name: plugin-tasks
-description: Generate a structured task list for building a WordPress plugin feature or entire plugin. Outputs a markdown file with sequential, testable steps.
+description: Generate a structured task list for building a WordPress plugin feature or entire plugin. Reads a PRD file produced by /plugin-plan and outputs a markdown file with sequential, testable steps.
 disable-model-invocation: true
-argument-hint: <description of the plugin or feature to build>
-allowed-tools: Read, Write, Bash
+argument-hint: <path-to-prd-file>
+allowed-tools: Read, Write, Bash, Grep, Glob
 ---
 
 # Generate WordPress Plugin Task List
 
-You are generating a task list for a WordPress plugin development project. The user will describe what they want to build and you will produce a structured, sequential task list saved as a markdown file.
+You are generating a task list for a WordPress plugin development project. You will read a PRD (Product Requirements Document) and translate it into a structured, sequential set of build tasks.
 
 ## Input
 
-The user's description of what to build: **$ARGUMENTS**
+PRD file to use: **$ARGUMENTS**
+
+If no argument is provided, look for `PRD.md` in the project root. If multiple `PRD-*.md` files exist, list them and ask the user which one to use.
+
+If the argument is not a file path (i.e. it looks like a plain description rather than a filename), that's fine — treat it as a direct description and proceed. But tell the user that for better results, they should run `/plugin-plan` first to produce a PRD.
 
 ## Process
 
-1. **Analyse the request.** Break down what the user described into logical areas of functionality. Think about what data layer is needed, what admin UI is required, what public-facing output exists, what APIs are involved, and what tests should cover.
+1. **Read the PRD.** Load the full PRD into context. Understand the plugin's purpose, data model, features, integrations, lifecycle, and testing strategy.
 
 2. **Research the codebase.** Before writing tasks, check the current project directory for existing code, an existing CLAUDE.md, composer.json, package.json, or any prior task files. Understand what already exists so you don't duplicate work or contradict existing architecture.
 
@@ -29,7 +33,7 @@ Use this exact structure:
 ```markdown
 # Task List: [Feature/Plugin Name]
 
-> Generated from: [the user's original description]
+> Generated from: [PRD file path or direct description]
 > Date: [today's date]
 
 ## Overview
@@ -82,4 +86,5 @@ Use this exact structure:
 Once the file is saved, tell the user:
 - The file path where the task list was saved.
 - The total number of tasks.
+- Any PRD sections that were ambiguous or produced assumptions — flag these so the developer can verify.
 - Suggest they review it and adjust before starting, then use `/plugin-build` to begin working through it.

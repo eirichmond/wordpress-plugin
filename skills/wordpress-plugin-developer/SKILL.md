@@ -323,7 +323,9 @@ Only load a reference file when the user's task specifically needs that detail.
 
 ## Commands
 
-This skill includes two commands for structured plugin development:
+This skill includes four commands for structured plugin development. The intended workflow is **plan → tasks → build**, with **status** as an audit at any point.
 
-- `/plugin-tasks <description>` — Generates a sequential, testable task list as a TASKS.md file based on the plugin or feature description provided. Each task includes what to build and how to verify it. Run this first.
-- `/plugin-build [path-to-tasks-file]` — Works through a task list one step at a time, implementing each task, verifying it, and marking it complete before moving on. Defaults to TASKS.md if no path is given.
+- `/plugin-plan <plugin idea>` — Runs a discovery conversation to uncover requirements, blind spots, and edge cases. Asks questions in rounds before producing a `PRD.md` file. Run this first.
+- `/plugin-tasks [path-to-prd-file]` — Reads a PRD file (defaults to `PRD.md`) and generates a sequential, testable task list as `TASKS.md`. Each task includes what to build and how to verify it.
+- `/plugin-build [path-to-tasks-file]` — Works through a task list one step at a time, implementing each task, verifying it, and marking it complete before moving on. Defaults to `TASKS.md`.
+- `/plugin-status [path-to-tasks-file]` — Audits the current codebase against the task list. Inspects actual code rather than trusting checkboxes — flags stubs, missing DocBlocks, security gaps, and checkbox mismatches. Read-only, changes nothing.
