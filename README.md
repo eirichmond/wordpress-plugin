@@ -4,7 +4,7 @@ A [Claude Code plugin](https://docs.anthropic.com/en/docs/claude-code/plugins) t
 
 ## What It Does
 
-This plugin adds three things to your Claude Code sessions:
+This plugin adds four things to your Claude Code sessions:
 
 ### 1. WordPress Plugin Developer Skill
 
@@ -17,17 +17,31 @@ Automatically activates when you're working on WordPress plugin code. Claude wil
 - Structure plugins with PSR-4 autoloading, Composer, and `@wordpress/scripts`
 - Add DocBlocks to every function, favour early returns, keep functions small and single-purpose
 
-### 2. `/plugin-tasks` Command
+### 2. `/plugin-plan` Command
 
-Generates a structured, sequential task list before any code is written.
+Runs a structured discovery conversation before any code — or any task list — is written. Claude asks questions in rounds (core purpose, scope and data, user interface, integrations and APIs, edge cases and constraints), follows up adaptively based on your answers, and checks the current project directory for an existing plugin structure, `CLAUDE.md`, or `composer.json` so the result fits what's already there.
 
 ```
-/plugin-tasks A WooCommerce extension that adds gift wrapping options to products
+/plugin-plan A WooCommerce extension that adds gift wrapping options to products
 ```
 
-This produces a `TASKS.md` file with numbered, grouped tasks where each task has a clear description and a verification step. Tasks are ordered so each one builds on the last and can be tested independently.
+The output is a `PRD.md` file in the project root (or `PRD-<slug>.md` if one already exists). The PRD captures the plugin's purpose, goals, non-goals, data model, features, admin UI, frontend output, REST API, integrations, scheduled tasks, CLI commands, lifecycle, and testing strategy.
 
-### 3. `/plugin-build` Command
+Run this **before** `/plugin-tasks` — the PRD it produces is the input to the task generator.
+
+### 3. `/plugin-tasks` Command
+
+Reads a PRD file produced by `/plugin-plan` and turns it into a structured, sequential task list before any code is written.
+
+```
+/plugin-tasks PRD.md
+```
+
+If you don't pass an argument, it looks for `PRD.md` in the project root. If you pass a free-form description instead of a file path it will still proceed, but you'll get better results by running `/plugin-plan` first.
+
+The output is a `TASKS.md` file (or `TASKS-<slug>.md` if one already exists) with numbered, grouped tasks where each task has a clear description and a verification step. Tasks are ordered so each one builds on the last and can be tested independently.
+
+### 4. `/plugin-build` Command
 
 Works through a task list one step at a time - implementing, verifying, and marking each task complete before moving on.
 
@@ -68,7 +82,7 @@ This loads the WordPress plugin developer skill and commands for that session on
 
 ### Verify it's loaded
 
-Once in the session, you can confirm the plugin is active by running `/plugin-tasks` or `/plugin-build`. Claude should also automatically apply WordPress coding standards and security practices when you ask it to write plugin code.
+Once in the session, you can confirm the plugin is active by running `/plugin-plan`, `/plugin-tasks`, or `/plugin-build`. Claude should also automatically apply WordPress coding standards and security practices when you ask it to write plugin code.
 
 ## Usage
 
@@ -80,31 +94,45 @@ Once in the session, you can confirm the plugin is active by running `/plugin-ta
 mkdir ~/projects/my-plugin && cd ~/projects/my-plugin
 ```
 
-2. Start Claude Code and describe what you want to build:
+2. Start Claude Code and run a discovery session to produce a PRD:
 
 ```
-/plugin-tasks A WordPress plugin that adds a custom "Projects" post type with
+/plugin-plan A WordPress plugin that adds a custom "Projects" post type with
 portfolio fields, a filterable archive page, and a Gutenberg block for
 displaying featured projects
 ```
 
-3. Review the generated `TASKS.md`. Edit it if you want to add, remove, or reorder tasks.
+Claude will ask questions in rounds. Answer them, and a `PRD.md` will be written to the project root.
 
-4. Start building:
+3. Review `PRD.md`. Edit anything that's wrong, fill in any open questions, and tighten the scope.
+
+4. Generate the task list from the PRD:
+
+```
+/plugin-tasks PRD.md
+```
+
+5. Review the generated `TASKS.md`. Edit it if you want to add, remove, or reorder tasks.
+
+6. Start building:
 
 ```
 /plugin-build
 ```
 
-5. Claude implements one task at a time, verifies it, marks it complete, and asks if you're ready to continue.
+Claude implements one task at a time, verifies it, marks it complete, and asks if you're ready to continue.
 
 ### Adding a feature to an existing plugin
 
-The same workflow applies. Navigate to your existing plugin directory and use `/plugin-tasks` to plan the new feature. Claude will check your existing codebase first to avoid duplicating code or contradicting your architecture.
+The same workflow applies. Navigate to your existing plugin directory and run `/plugin-plan` to scope the new feature — Claude will detect the existing plugin structure and treat the PRD as a feature spec rather than a new plugin. Then run `/plugin-tasks` against the resulting PRD.
 
 ```
-/plugin-tasks Add a REST API endpoint for the Projects post type with full CRUD,
+/plugin-plan Add a REST API endpoint for the Projects post type with full CRUD,
 filtering by taxonomy, and batch operations
+```
+
+```
+/plugin-tasks PRD-projects-rest-api.md
 ```
 
 ### Working without the task workflow
@@ -130,7 +158,8 @@ Claude will write the code following all the same standards - strict types, WPCS
 
 | Command | File | Purpose |
 |---|---|---|
-| `/plugin-tasks` | `commands/plugin-tasks/SKILL.md` | Generate a sequential task list from a feature description |
+| `/plugin-plan` | `commands/plugin-plan/SKILL.md` | Run a discovery conversation and produce a PRD |
+| `/plugin-tasks` | `commands/plugin-tasks/SKILL.md` | Generate a sequential task list from a PRD file |
 | `/plugin-build` | `commands/plugin-build/SKILL.md` | Execute a task list step-by-step with verification |
 | `/plugin-status` | `commands/plugin-status/SKILL.md` | *(Planned)* |
 
