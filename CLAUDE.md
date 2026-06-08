@@ -23,6 +23,7 @@ references/                  # Progressive disclosure: detailed examples loaded 
   rest-api.md                # Full WP_REST_Controller CRUD example
   testing.md                 # PHPUnit, wp-env, WP_UnitTestCase, Playwright
   lifecycle.md               # Activation, deactivation, uninstall, dbDelta, cron, WP-CLI
+  git-workflow.md            # Scoping git to the plugin dir ($PLUGIN_DIR, -C), nested-repo detection
 ```
 
 ## Key Design Decisions
