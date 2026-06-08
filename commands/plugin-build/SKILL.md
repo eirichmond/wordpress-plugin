@@ -18,10 +18,12 @@ If no argument is provided, look for `TASKS.md` in the project root. If multiple
 
 ## Before Starting
 
-1. **Read the task file.** Load the full task list into context.
-2. **Read the SKILL.md** in this plugin's skill directory to load the WordPress plugin development standards. Follow all coding standards, security rules, and code style rules defined there.
-3. **Check the codebase.** Look at what already exists — files, composer.json, package.json, existing src/ structure. Understand the current state.
-4. **Find the first unchecked task.** Scan for the first `- [ ]` item. That's where you start.
+1. **Ensure a git repository exists.** Run `git rev-parse --is-inside-work-tree` to check. If it fails (the directory is not a repo), run `git init` and make an initial commit of the current state so there's a baseline to branch from. If it's already a repo, do nothing.
+2. **Create a working branch.** Derive a sensible branch name from the task file's feature/plugin name — e.g. `feature/<slugified-feature-name>` (lowercase, hyphenated, no spaces). First check the current branch with `git rev-parse --abbrev-ref HEAD`. If you're already on a matching `feature/*` branch, stay on it; otherwise run `git checkout -b <branch-name>`. Never build directly on `main`/`master`. Tell the user which branch you created or are using.
+3. **Read the task file.** Load the full task list into context.
+4. **Read the SKILL.md** in this plugin's skill directory to load the WordPress plugin development standards. Follow all coding standards, security rules, and code style rules defined there.
+5. **Check the codebase.** Look at what already exists — files, composer.json, package.json, existing src/ structure. Understand the current state.
+6. **Find the first unchecked task.** Scan for the first `- [ ]` item. That's where you start.
 
 ## Workflow — Repeat For Each Task
 
@@ -55,9 +57,11 @@ If the task list says "verify X appears in admin", you obviously can't do that �
 
 If verification fails, fix the issue before moving on. Do not skip to the next task with a broken step behind you.
 
-### Step 4: Mark the task complete
+### Step 4: Mark the task complete and commit
 
 Update the task file. Change `- [ ]` to `- [x]` for the completed task. Save the file.
+
+Then commit this task on its own so the branch builds a clean, one-commit-per-task history. Stage the files you changed for this task (including the updated task file) and commit with a message referencing the task — e.g. `git commit -m "Task 1.1: <short task title>"`. Don't push yet; the push and PR happen once at the end.
 
 ### Step 5: Pause and check in
 
@@ -87,3 +91,9 @@ Once every task is checked off:
 2. Summarise what was built — list the files created/modified.
 3. Note any manual testing the user should do.
 4. Suggest any follow-up tasks that became apparent during the build (but don't add them to the task file without asking).
+5. **Push the branch and open a PR.** Once verification passes:
+   - Commit any remaining uncommitted changes with a clear message.
+   - **Ask the user to confirm before pushing.** Show them the branch name and a short summary of the PR you intend to open, then ask: **"Push this branch and open a PR? (yes / no)"** Do not push or create the PR until they confirm. If they decline, stop here and leave the branch committed locally so they can push it themselves later.
+   - Once confirmed, push the branch: `git push -u origin <branch-name>`.
+   - If a GitHub remote exists and the `gh` CLI is available, open a PR with `gh pr create`, using a title and body that summarise what was built across all tasks. Otherwise, print the branch name and tell the user to open the PR manually.
+   - Confirm to the user that the branch is pushed and the PR is ready for review and approval.
